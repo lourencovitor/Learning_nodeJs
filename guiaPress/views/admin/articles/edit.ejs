@@ -7,7 +7,8 @@ include('../../partials/navbar.ejs') -%>
       <h2>Editar artigo</h2>
     </div>
     <div class="card-body">
-      <form method="POST" action="/articles/save">
+      <form method="POST" action="/articles/update">
+        <input type="hidden" value="<%= article.id %>" name="id" />
         <input
           type="text"
           name="title"
@@ -26,11 +27,11 @@ include('../../partials/navbar.ejs') -%>
         <select class="form-control" name="category">
           <% categories.forEach((category) => { %> <% if(category.id ===
           article.categoryId){ %>
-          <option value="<%= article.id %>" selected
+          <option value="<%= category.id %>" selected
             ><%= category.title %></option
           >
           <% } else {%>
-          <option value="<%= article.id %>"><%= category.title %></option>
+          <option value="<%= category.id %>"><%= category.title %></option>
           <%}%> <% }) %>
         </select>
         <br />

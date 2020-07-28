@@ -1,6 +1,9 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
+const cors = require("cors");
+
+app.use(cors());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -22,7 +25,7 @@ const DB = {
     {
       id: 3,
       title: "Cs Go",
-      year: 2015,
+      year: 2016,
       price: 50,
     },
   ],

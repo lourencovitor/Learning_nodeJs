@@ -5,6 +5,9 @@ const cors = require("cors");
 const jwt = require("jsonwebtoken");
 
 const JWTSecret = "8b1ec4e10903a55df60359e5d0c55bf6d1c7774e";
+
+app.use("/favicon.ico", express.static("images/favicon.ico")); // Adicionando favicon
+
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

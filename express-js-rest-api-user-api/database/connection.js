@@ -1,10 +1,11 @@
+const { connection } = require("./config");
 const knex = require("knex")({
   client: "mysql2",
   connection: {
-    host: "127.0.0.1",
-    user: "root",
-    password: "positivo20",
-    database: "apiusers",
+    host: connection.host,
+    user: connection.user,
+    password: connection.password,
+    database: connection.database,
   },
 });
 

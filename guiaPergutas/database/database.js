@@ -1,8 +1,14 @@
+const { config } = require("./config");
 const Sequelize = require("sequelize");
 
-const connection = new Sequelize("guia_perguntas", "root", "positivo20", {
-  host: "localhost",
-  dialect: "mysql",
-});
+const connection = new Sequelize(
+  config.database,
+  config.user,
+  config.password,
+  {
+    host: config.host,
+    dialect: config.dialect,
+  }
+);
 
 module.exports = connection;

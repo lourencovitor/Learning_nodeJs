@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+      crossorigin="anonymous"
+    />
+  </head>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Lobster&display=swap");
+    @import url("https://fonts.googleapis.com/css2?family=Rye&display=swap");
+    body {
+      margin: 5px;
+    }
+    h1 {
+      font-family: "Lobster", cursive;
+    }
+    #chat {
+      max-height: 400px;
+      min-height: 400px;
+      background-color: #0069d9;
+      color: #fff;
+      border-radius: 15px;
+      overflow-y: scroll;
+      padding: 30px;
+      font-family: "Rye", cursive;
+    }
+
+    .div-princ {
+      margin-left: 15px;
+      margin-right: 15px;
+    }
+
+    #chat::-webkit-scrollbar {
+      width: 10px;
+      background: #e3e0d6;
+    }
+    #chat::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.1);
+    }
+    #chat::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      background: #8b8778;
+    }
+  </style>
+  <body>
+    <div class="div-princ">
+      <h1 class="text-center">Chat do Guia</h1>
+      <div id="chat"></div>
+      <br />
+      <input
+        type="text"
+        id="username"
+        class="form-control"
+        placeholder="Seu nome de usúario"
+      />
+      <br />
+      <input
+        type="text"
+        id="msg"
+        class="form-control mb-3"
+        placeholder="Msg..."
+      />
+
+      <button class="btn btn-primary btn-lg btn-block" onclick="enviar()">
+        Enviar
+      </button>
+    </div>
+  </body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.1/socket.io.js"></script>
+  <script>
+    document.addEventListener("keypress", (event) => {
+      const key = event.key;
+      if (key === "Enter") {
+        enviar();
+        clearFields();
+      }
+    });
+
+    let objDiv = document.getElementById("chat");
+    objDiv.scrollTop = objDiv.scrollHeight;
+
+    let socket = io("http://localhost:3000");
+
+    socket.on("userConnection", (data) => {
+      console.log(data);
+      const chat = document.getElementById("chat");
+      const span = document.createElement("span");
+      span.setAttribute("class", "d-flex justify-content-center mb-5");
+      span.innerHTML = `id: ${data}`;
+      chat.append(span);
+    });
+
+    socket.on("disconnect", () => {
+      console.log("Desconectado");
+    });
+
+    socket.on("showmsg", (data) => {
+      console.log(data);
+      const chat = document.getElementById("chat");
+      const p = document.createElement("p");
+      p.innerHTML = `${data.username} : ${data.msg}`;
+      chat.append(p);
+    });
+
+    function enviar() {
+      const msgField = document.getElementById("msg");
+      const usernameField = document.getElementById("username");
+
+      const msg = msgField.value;
+      const username = usernameField.value;
+      socket.emit("msg", { msg, username });
+      clearFields();
+    }
+
+    function clearFields() {
+      document.getElementById("msg").value = "";
+    }
+  </script>
+</html>
